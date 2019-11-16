@@ -1,7 +1,7 @@
 {
   "name": "components",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Components example",
   "author": "Julien Karst <contact@julienkarst.com>",
   "homepage": "https://github.com/JulienKode/circleci-monorepo-example#readme",
