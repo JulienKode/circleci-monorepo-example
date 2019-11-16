@@ -1,0 +1,91 @@
+version: 2.1
+
+parameters:
+  # By default we enable the main workflow
+  trigger:
+    type: boolean
+    default: true
+
+  # Add a boolean parameter on each package.
+  core:
+    type: boolean
+    default: false
+  components:
+    type: boolean
+    default: false
+
+executors:
+  node:
+    docker:
+      - image: circleci/node
+
+jobs:
+  trigger-workflows:
+    executor: node
+    steps:
+      - checkout
+      - run: yarn --frozen-lockfile
+      - run:
+          name: Trigger workflows
+          command: node ./circleci.js
+
+  new_version:
+    executor: node
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - '7d:4f:a9:ac:9d:54:47:bc:4d:aa:bd:b0:98:20:df:91'
+      - run: git config user.email "ci@julienkarst.com" && git config user.name "[CI] 🤖"
+      - run: yarn bump:version
+
+  lint:
+    parameters:
+      package_name:
+        type: string
+    executor: node
+    steps:
+      - run:
+          name: Running linter on << parameters.package_name >>
+          command: echo << parameters.package_name >> lint
+
+  test:
+    parameters:
+      package_name:
+        type: string
+    executor: node
+    steps:
+      - run:
+          name: Running linter on << parameters.package_name >>
+          command: echo << parameters.package_name >> lint
+
+workflows:
+  version: 2
+
+  # The main workflow will trigger other workflow based on your changes
+  trigger:
+    when: << pipeline.parameters.trigger >>
+    jobs:
+      - trigger-workflows
+      - new_version:
+          requires:
+            - trigger-workflows
+          filters:
+            branches:
+              only:
+                - master
+
+  # Workflows defined for each package.
+  core:
+    when: << pipeline.parameters.core >>
+    jobs:
+      - lint:
+          package_name: core
+
+  components:
+    when: << pipeline.parameters.components >>
+    jobs:
+      - test:
+          package_name: components
+      - lint:
+          package_name: components

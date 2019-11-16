@@ -1,0 +1,15 @@
+{
+  "name": "root",
+  "private": true,
+  "devDependencies": {
+    "lerna": "^3.13.1",
+    "node-fetch": "^2.6.0"
+  },
+  "scripts": {
+    "check:changes": "npx lerna changed --all",
+    "bump:version": "npx lerna version --conventional-commits --yes"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
+}

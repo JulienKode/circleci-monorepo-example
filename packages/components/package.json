@@ -1,0 +1,27 @@
+{
+  "name": "components",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Components example",
+  "author": "Julien Karst <contact@julienkarst.com>",
+  "homepage": "https://github.com/JulienKode/circleci-monorepo-example#readme",
+  "license": "ISC",
+  "main": "lib/components.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JulienKode/circleci-monorepo-example.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/JulienKode/circleci-monorepo-example/issues"
+  }
+}
